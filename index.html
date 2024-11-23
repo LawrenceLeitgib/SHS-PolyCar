@@ -28,17 +28,21 @@
       //          })
        //         .catch(error => console.error(error));
             // Fetch data from Google Sheet CSV
+            //https://docs.google.com/spreadsheets/d/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/edit?usp=drive_link
             const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnSHE_5GJTfZVPurW38S4KHV5sSfWSRuhwAR2GmNEribT1XjTdvQ9I_wJpeOLr2wl-fNbHI1fyOilY/pub?gid=1830907616&single=true&output=csv";
-            fetch("https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/e/2PACX-1vRnSHE_5GJTfZVPurW38S4KHV5sSfWSRuhwAR2GmNEribT1XjTdvQ9I_wJpeOLr2wl-fNbHI1fyOilY/pub?gid=1830907616&single=true&output=csv")
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/values/Geocoded Data!A1:E16?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc`;
+
+            fetch(url)
                 .then(response => response.text())
                 .then(csvText => {
-                    const rows = csvText.split("\n").slice(1); // Skip header row
-                    rows.forEach(row => {
-                        const columns = row.split(",");
-                        const name = columns[0]; // Assuming Name is in column 1
-                        const lat = parseFloat(columns[2]); // Latitude in column 2
-                        const lng = parseFloat(columns[3]); // Longitude in column 3
+                    data=JSON.parse(csvText)
+                    
+                    data["values"].forEach(row => {
+                        const name = row[0]; // Assuming Name is in column 1
+                        const lat = parseFloat(row[2]); // Latitude in column 2
+                        const lng = parseFloat(row[3]); // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
+                            console.log(row)
                             // Add a marker for each location
                             const marker = new google.maps.Marker({
                                 position: { lat, lng },
