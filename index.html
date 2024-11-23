@@ -3,52 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Map</title>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <title>Dynamic Google Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
     <style>
-        #map { width: 100%; height: 500px; }
+        #map {
+            height: 500px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-    <h1>Dynamic Map</h1>
+    <h1>Dynamic Google Map</h1>
     <div id="map"></div>
 
     <script>
-        // Set your Mapbox access token
-        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        // Initialize the Google Map
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 0, lng: 0 }, // Default center
+                zoom: 2, // Default zoom level
+            });
 
-        // Initialize the map
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [0, 0], // Starting position [lng, lat]
-            zoom: 2 // Starting zoom level
-        });
+            // Fetch data from Google Sheet CSV
+            const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnSHE_5GJTfZVPurW38S4KHV5sSfWSRuhwAR2GmNEribT1XjTdvQ9I_wJpeOLr2wl-fNbHI1fyOilY/pub?gid=1830907616&single=true&output=csv";
 
-        // Fetch data from the published Google Sheet
-        const sheetUrl = 'YOUR_GOOGLE_SHEET_CSV_URL';
+            fetch(sheetUrl)
+                .then(response => response.text())
+                .then(csvText => {
+                    const rows = csvText.split("\n").slice(1); // Skip header row
+                    rows.forEach(row => {
+                        const columns = row.split(",");
+                        const name = columns[0]; // Assuming Name is in column 1
+                        const lat = parseFloat(columns[2]); // Latitude in column 2
+                        const lng = parseFloat(columns[3]); // Longitude in column 3
 
-        fetch(sheetUrl)
-            .then(response => response.text())
-            .then(csvData => {
-                const rows = csvData.split('\n').slice(1); // Skip header row
-                rows.forEach(row => {
-                    const columns = row.split(',');
-                    const name = columns[0]; // Assuming name is column 1
-                    const lat = parseFloat(columns[1]); // Latitude column
-                    const lng = parseFloat(columns[2]); // Longitude column
+                        if (!isNaN(lat) && !isNaN(lng)) {
+                            // Add a marker for each location
+                            const marker = new google.maps.Marker({
+                                position: { lat, lng },
+                                map: map,
+                                title: name,
+                            });
 
-                    if (!isNaN(lat) && !isNaN(lng)) {
-                        // Add a marker for each location
-                        new mapboxgl.Marker()
-                            .setLngLat([lng, lat])
-                            .setPopup(new mapboxgl.Popup().setText(name)) // Add a popup with the name
-                            .addTo(map);
-                    }
-                });
-            })
-            .catch(error => console.error('Error loading data:', error));
+                            // Add an info window for each marker
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: `<div>${name}</div>`,
+                            });
+
+                            marker.addListener("click", () => {
+                                infoWindow.open(map, marker);
+                            });
+                        }
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        }
+
+        // Load the map when the page loads
+        window.onload = initMap;
     </script>
 </body>
 </html>
