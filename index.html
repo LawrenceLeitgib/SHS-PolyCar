@@ -36,10 +36,19 @@
                         const lng = parseFloat(row[3]); // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
                             // Add a marker for each location
+                           var color;
+                           if(name=="un conducteur"){
+                            color="red"
+                           }else{
+                            color="blue"
+                           }
                             const marker = new google.maps.Marker({
                                 position: { lat, lng },
                                 map: map,
-                                title: name
+                                title: name,
+                                icon: {
+                                     url: "http://maps.google.com/mapfiles/ms/icons/"+color+"-dot.png", // URL to a blue marker icon
+                                 },
                             });
                             // Add an info window for each marker
                             const infoWindow = new google.maps.InfoWindow({
