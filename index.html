@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <h1>Dynamic Google Map</h1>
+    <h1>Carte des Personne Inscrit</h1>
     <div id="map"></div>
     <script>
         // Initialize the Google Map
@@ -38,7 +38,7 @@
                     data=JSON.parse(csvText)
                     
                     data["values"].forEach(row => {
-                        const name = row[0]; // Assuming Name is in column 1
+                        const name = row[4]; 
                         const lat = parseFloat(row[2]); // Latitude in column 2
                         const lng = parseFloat(row[3]); // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
@@ -47,11 +47,11 @@
                             const marker = new google.maps.Marker({
                                 position: { lat, lng },
                                 map: map,
-                                title: name,
+                                title: name
                             });
                             // Add an info window for each marker
                             const infoWindow = new google.maps.InfoWindow({
-                                content: `<div>${name}</div>`,
+                                content: `<div>${name} : ${row[1]}</div>`,
                             });
                             marker.addListener("click", () => {
                                 infoWindow.open(map, marker);
