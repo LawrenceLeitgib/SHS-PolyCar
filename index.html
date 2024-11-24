@@ -22,15 +22,8 @@
                 center: { lat: 0, lng: 0 }, // Default center
                 zoom: 2, // Default zoom level
             })
-           // fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vRnSHE_5GJTfZVPurW38S4KHV5sSfWSRuhwAR2GmNEribT1XjTdvQ9I_wJpeOLr2wl-fNbHI1fyOilY/pub?gid=1830907616&single=true&output=csv")
-        //        .then(response => {
-       //             console.log(response); // Opaque response
-      //          })
-       //         .catch(error => console.error(error));
-            // Fetch data from Google Sheet CSV
-            //https://docs.google.com/spreadsheets/d/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/edit?usp=drive_link
-            const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnSHE_5GJTfZVPurW38S4KHV5sSfWSRuhwAR2GmNEribT1XjTdvQ9I_wJpeOLr2wl-fNbHI1fyOilY/pub?gid=1830907616&single=true&output=csv";
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/values/Geocoded Data!A1:E16?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc`;
+
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/values/Geocoded Data!A1:E100?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc`;
 
             fetch(url)
                 .then(response => response.text())
@@ -42,7 +35,6 @@
                         const lat = parseFloat(row[2]); // Latitude in column 2
                         const lng = parseFloat(row[3]); // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
-                            console.log(row)
                             // Add a marker for each location
                             const marker = new google.maps.Marker({
                                 position: { lat, lng },
