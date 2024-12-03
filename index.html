@@ -28,7 +28,7 @@
                 .then(response => response.text())
                 .then(csvText => {
                     data=JSON.parse(csvText)
-                    latExiste=[];
+                    var latExiste=[];
                     data["values"].forEach(row => {
                         var latRand=0
                         var lngRand=0
@@ -36,7 +36,7 @@
                             latRand=Math.random()/30
                             lngRand=Math.random()/30
                         }else{
-                            latExiste.append(parseFloat(row[2]))
+                            latExiste.push(parseFloat(row[2]))
                         }
                         const name = row[4];
                         const lat = parseFloat(row[2])+latRand; // Latitude in column 2
