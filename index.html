@@ -28,11 +28,17 @@
                 .then(response => response.text())
                 .then(csvText => {
                     data=JSON.parse(csvText)
-                    
+                    latExiste=[];
                     data["values"].forEach(row => {
+                        var latRand=0
+                        var lngRand=0
+                        if(latExiste.includes(parseFloat(row[2]))){
+                            latRand=Math.random()/30
+                            lngRand=Math.random()/30
+                        }else{
+                            latExiste.append(parseFloat(row[2]))
+                        }
                         const name = row[4];
-                        latRand=Math.random()/10
-                        lngRand=Math.random()/10
                         const lat = parseFloat(row[2])+latRand; // Latitude in column 2
                         const lng = parseFloat(row[3])+lngRand; // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
