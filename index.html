@@ -7,7 +7,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc"></script>
     <style>
         #map {
-            height: 1200px;
+            height: 300px;
             width: 100%;
         }
     </style>
@@ -18,8 +18,8 @@
         // Initialize the Google Map
         function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 44.5197, lng: 6.6323 }, // Lausanne
-                zoom: 6, // Zoom over europe
+                center: { lat: 45.5197, lng: 6.6323 }, // Center of europe, a bit south
+                zoom: 5, // Zoom over europe
             })
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/1ars2KXBRapAdgV_-yDCmWVl6Gty9R_ilMZxrTnCFHvU/values/Geocoded Data!A1:E100?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc`;
