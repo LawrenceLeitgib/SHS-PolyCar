@@ -7,7 +7,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfW87nt0jEyEG_zCZKradj8PPgR7sADHc"></script>
     <style>
         #map {
-            height: 800px;
+            height: 1200px;
             width: 100%;
         }
     </style>
@@ -30,15 +30,20 @@
                     data=JSON.parse(csvText)
                     
                     data["values"].forEach(row => {
-                        const name = row[4]; 
-                        const lat = parseFloat(row[2]); // Latitude in column 2
-                        const lng = parseFloat(row[3]); // Longitude in column 3
+                        const name = row[4];
+                        latRand=Math.random()/1000
+                        lngRand=Math.random()/1000
+                        const lat = parseFloat(row[2])+latRand; // Latitude in column 2
+                        const lng = parseFloat(row[3])+lngRand; // Longitude in column 3
                         if (!isNaN(lat) && !isNaN(lng)) {
                             // Add a marker for each location
                            var color;
                            if(name=="un conducteur"){
                             color="red"
-                           }else{
+                           }else if(name="je peux être les deux"){
+                            color="green"
+                           }
+                           else{
                             color="blue"
                            }
                             const marker = new google.maps.Marker({
